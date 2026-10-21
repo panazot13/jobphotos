@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jobsite Photos</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f2b01e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jobsite">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eceae4;--card:#fbfaf7;--ink:#23272b;--mute:#6b7076;--line:#d6d3ca;--acc:#f2b01e;--accink:#2a2000;--ok:#2f7d4f;--hold:#b4531f;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17191b;--card:#212427;--ink:#ecebe6;--mute:#9aa0a6;--line:#363a3e;--acc:#f2b01e;--accink:#2a2000;--ok:#5fc08a;--hold:#e8864f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17191b;--card:#212427;--ink:#ecebe6;--mute:#9aa0a6;--line:#363a3e;--acc:#f2b01e;--accink:#2a2000;--ok:#5fc08a;--hold:#e8864f;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.45 Barlow,system-ui,sans-serif}
+h1,h2,h3{font-family:"Barlow Condensed",Barlow,sans-serif;font-weight:700;margin:0;letter-spacing:.2px}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+.bar{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.bar h1{font-size:30px;flex:1}
+.btn{border:1px solid var(--line);background:var(--card);padding:9px 14px;border-radius:8px;cursor:pointer;font-weight:500}
+.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--accink);font-weight:600}
+.btn.danger{color:var(--hold)}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+textarea{min-height:90px;resize:vertical}
+label{display:block;font-size:14px;color:var(--mute);margin:10px 0 4px}
+.list{display:grid;gap:10px;margin-top:12px}
+.proj{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px;cursor:pointer;text-align:left;width:100%}
+.thumb{width:76px;height:76px;border-radius:6px;background:var(--line) center/cover;flex:none;display:grid;place-items:center;color:var(--mute);font-size:12px}
+.proj .t{font:700 21px "Barlow Condensed",sans-serif}
+.meta{color:var(--mute);font-size:14px}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--acc)}
+.tag{display:inline-block;font-size:13px;font-weight:600;padding:1px 8px;border-radius:10px;border:1px solid currentColor}
+.s-active{color:var(--ok)}.s-hold{color:var(--hold)}.s-done{color:var(--mute)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.ph{aspect-ratio:1;border-radius:8px;background:var(--line) center/cover;border:0;cursor:pointer;position:relative;padding:0}
+.ph span{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);color:#fff;font-size:12px;padding:3px 6px;border-radius:0 0 8px 8px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.note{border-left:3px solid var(--acc);padding:4px 10px;margin:8px 0}
+.empty{color:var(--mute);padding:22px 8px;text-align:center}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:20;display:flex;flex-direction:column;padding:calc(12px + env(safe-area-inset-top,0px)) 12px calc(12px + env(safe-area-inset-bottom,0px));gap:10px;color:#fff}
+.lb img{flex:1;min-height:0;object-fit:contain;width:100%}
+.lb input{background:#fff2;border-color:#fff4;color:#fff}
+.lb .acts{display:flex;gap:8px}.lb .btn{background:#fff2;border-color:#fff4;color:#fff}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;z-index:30}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.chip{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:3px 12px;cursor:pointer;font-size:14px}.chip.on{background:var(--acc);border-color:var(--acc);color:var(--accink);font-weight:600}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const KEY='jobsite-v1';
+let db={projects:[]},view={id:null,q:'',edit:false,lb:null,tag:''};
+try{const r=localStorage.getItem(KEY);if(r)db=JSON.parse(r)}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db));return true}catch(e){toast('Storage is full. Delete some photos to save more.');return false}}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,10);
+const fmt=t=>new Date(t).toLocaleString([], {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+const ST={active:'Active',hold:'On hold',done:'Complete'};
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+const proj=()=>db.projects.find(p=>p.id===view.id);
+
+function render(){
+  const a=$('#app');
+  const p=proj();
+  a.innerHTML=p?detail(p):home();
+  if(view.lb)lightbox(p);
+}
+function home(){
+  const q=view.q.toLowerCase();
+  const ps=db.projects.filter(p=>(p.name+' '+p.address+' '+p.client).toLowerCase().includes(q));
+  return `<div class="bar"><h1>Projects</h1><button class="btn pri" onclick="newProj()">New project</button></div>
+  <input type="search" placeholder="Search by name, address or client" value="${esc(view.q)}" oninput="view.q=this.value;render();this.focus()" aria-label="Search projects">
+  <div class="list">${ps.map(card).join('')||`<div class="empty">${db.projects.length?'No projects match your search.':'No projects yet. Add your first project to start capturing photos.'}</div>`}</div>
+  <div class="bar" style="margin-top:18px"><button class="btn" onclick="backup()">Back up data</button><label class="btn" style="margin:0;color:var(--ink)">Restore backup<input type="file" accept=".json,application/json" hidden onchange="restore(this)"></label></div>`;
+}
+function card(p){
+  const c=p.photos[0];
+  return `<button class="proj" onclick="open_('${p.id}')">
+  <div class="thumb" style="${c?`background-image:url(${c.src})`:''}">${c?'':'No photos'}</div>
+  <div style="flex:1;min-width:0"><div class="t">${esc(p.name)}</div>
+  <div class="meta">${esc(p.address)||'No address'}</div>
+  <div class="meta"><span class="tag s-${p.status}">${ST[p.status]}</span> ${p.photos.length} photo${p.photos.length==1?'':'s'} · ${p.progress}%</div>
+  <div class="prog"><i style="width:${p.progress}%"></i></div></div></button>`;
+}
+function newProj(){
+  const p={id:uid(),name:'New project',address:'',client:'',status:'active',progress:0,notes:'',photos:[],updates:[],created:Date.now()};
+  db.projects.unshift(p);save();view.id=p.id;view.edit=true;render();
+}
+function open_(id){view.id=id;view.edit=false;render();scrollTo(0,0)}
+function back(){view.id=null;render()}
+function detail(p){
+  const info=view.edit?`<label for="f-name">Project name</label><input id="f-name" value="${esc(p.name)}">
+  <label for="f-addr">Address</label><input id="f-addr" value="${esc(p.address)}" autocomplete="street-address">
+  <div class="row"><div><label for="f-client">Client</label><input id="f-client" value="${esc(p.client)}"></div>
+  <div><label for="f-status">Status</label><select id="f-status">${Object.entries(ST).map(([k,v])=>`<option value="${k}" ${p.status==k?'selected':''}>${v}</option>`).join('')}</select></div></div>
+  <label for="f-prog">Progress: <b id="pv">${p.progress}</b>%</label><input id="f-prog" type="range" min="0" max="100" step="5" value="${p.progress}" oninput="$('#pv').textContent=this.value">
+  <label for="f-notes">Notes</label><textarea id="f-notes">${esc(p.notes)}</textarea>
+  <div class="bar" style="margin:12px 0 0"><button class="btn pri" onclick="saveInfo()">Save changes</button><button class="btn" onclick="view.edit=false;render()">Cancel</button><span style="flex:1"></span><button class="btn danger" onclick="delProj()">Delete project</button></div>`
+  :`<div class="meta">${esc(p.address)||'No address yet'}${p.client?' · '+esc(p.client):''}</div>
+  <div style="margin:8px 0"><span class="tag s-${p.status}">${ST[p.status]}</span></div>
+  <div class="prog" style="height:10px"><i style="width:${p.progress}%"></i></div><div class="meta">${p.progress}% complete</div>
+  <p style="white-space:pre-wrap;margin:10px 0 0">${esc(p.notes)||'<span class="meta">No notes yet.</span>'}</p>`;
+  return `<div class="bar"><button class="btn" onclick="back()" aria-label="Back to projects">Back</button><h1>${esc(p.name)}</h1>${view.edit?'':'<button class="btn" onclick="view.edit=true;render()">Edit</button>'}</div>
+  <div class="panel">${info}</div>
+  <div class="panel"><div class="bar"><h2 style="font-size:23px;flex:1">Photos</h2>
+  <label class="btn pri" style="margin:0;color:var(--accink)">Take photo<input type="file" accept="image/*" capture="environment" hidden onchange="addPhotos(this,true)"></label>
+  <label class="btn" style="margin:0;color:var(--ink)">Upload<input type="file" accept="image/*" multiple hidden onchange="addPhotos(this)"></label></div>
+  ${chips(p)}<div class="grid">${p.photos.map((x,i)=>{if(view.tag&&!(x.tags||[]).includes(view.tag))return '';const lab=(x.loc?'📍 ':'')+esc(x.caption)+((x.tags||[]).length?' #'+x.tags.map(esc).join(' #'):'');return `<button class="ph" style="background-image:url(${x.src})" onclick="view.lb=${i};render()" aria-label="Open photo ${i+1}">${lab.trim()?`<span>${lab}</span>`:''}</button>`}).join('')}</div>
+  ${p.photos.length?'':'<div class="empty">No photos yet. Take or upload one to document this job.</div>'}</div>
+  <div class="panel"><h2 style="font-size:23px;margin-bottom:8px">Progress log</h2>
+  <textarea id="f-upd" style="min-height:60px" placeholder="What happened today?" aria-label="New log entry"></textarea>
+  <button class="btn pri" style="margin-top:8px" onclick="addUpd()">Add entry</button>
+  ${p.updates.map(u=>`<div class="note"><div class="meta">${fmt(u.ts)} <button class="btn danger" style="padding:0 6px;border:0;background:none" onclick="delUpd('${u.id}')">Delete</button></div><div style="white-space:pre-wrap">${esc(u.text)}</div></div>`).join('')}</div>`;
+}
+function chips(p){const all=[...new Set(p.photos.flatMap(x=>x.tags||[]))].sort();if(!all.includes(view.tag))view.tag='';if(!all.length)return '';return `<div class="chips"><button class="chip ${view.tag?'':'on'}" onclick="view.tag='';render()">All</button>${all.map(t=>`<button class="chip ${view.tag==t?'on':''}" onclick="view.tag='${esc(t)}';render()">${esc(t)}</button>`).join('')}</div>`}
+function getLoc(){return new Promise(r=>{if(!navigator.geolocation)return r(null);try{navigator.geolocation.getCurrentPosition(g=>r({lat:+g.coords.latitude.toFixed(6),lng:+g.coords.longitude.toFixed(6),acc:Math.round(g.coords.accuracy)}),()=>r(null),{enableHighAccuracy:true,timeout:8000,maximumAge:30000})}catch(e){r(null)}})}
+async function backup(){
+  const name='jobsite-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  const f=new File([JSON.stringify(db)],name,{type:'application/json'});
+  try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return}}catch(e){if(e.name==='AbortError')return}
+  const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('Backup saved to your downloads');
+}
+function restore(inp){
+  const f=inp.files[0];inp.value='';if(!f)return;
+  f.text().then(t=>{try{const d=JSON.parse(t);if(!d||!Array.isArray(d.projects))throw 0;
+    if(!confirm('Restore '+d.projects.length+' project(s)? Projects with matching IDs will be replaced.'))return;
+    const m=new Map(db.projects.map(p=>[p.id,p]));d.projects.forEach(p=>{if(p&&p.id)m.set(p.id,{photos:[],updates:[],...p})});
+    const prev=db.projects;db.projects=[...m.values()];if(!save())db.projects=prev;else toast('Backup restored');render()}catch(e){toast('That file is not a Jobsite backup.')}})
+}
+function saveInfo(){
+  const p=proj();
+  p.name=$('#f-name').value.trim()||'Untitled project';p.address=$('#f-addr').value.trim();p.client=$('#f-client').value.trim();
+  p.status=$('#f-status').value;p.progress=+$('#f-prog').value;p.notes=$('#f-notes').value;
+  if(p.progress==100&&p.status=='active')p.status='done';
+  save();view.edit=false;render();toast('Saved');
+}
+function delProj(){if(confirm('Delete this project and all its photos?')){db.projects=db.projects.filter(p=>p.id!==view.id);save();view.id=null;render()}}
+function addUpd(){const t=$('#f-upd').value.trim();if(!t)return;proj().updates.unshift({id:uid(),text:t,ts:Date.now()});save();render()}
+function delUpd(id){const p=proj();p.updates=p.updates.filter(u=>u.id!==id);save();render()}
+function shrink(file){return new Promise((res,rej)=>{
+  const r=new FileReader();r.onerror=rej;
+  r.onload=()=>{const im=new Image();im.onerror=rej;im.onload=()=>{
+    const s=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement('canvas');
+    c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+    res(c.toDataURL('image/jpeg',.7))};im.src=r.result};
+  r.readAsDataURL(file)})}
+async function addPhotos(inp,cam){
+  const p=proj();let n=0;
+  const loc=cam?await getLoc():null;
+  if(cam&&!loc)toast('Location unavailable. Photo saved without it.');
+  for(const f of inp.files){try{p.photos.unshift({id:uid(),src:await shrink(f),caption:'',tags:[],loc,ts:Date.now()});n++}catch(e){toast('Could not read that image.')}}
+  inp.value='';if(n){if(!save())p.photos.splice(0,n);else toast(n+' photo'+(n>1?'s':'')+' added')}render();
+}
+function lightbox(p){
+  const x=p.photos[view.lb];if(!x){view.lb=null;return}
+  const d=document.createElement('div');d.className='lb';d.setAttribute('role','dialog');d.setAttribute('aria-label','Photo');
+  d.innerHTML=`<img src="${x.src}" alt="${esc(x.caption)||'Project photo'}"><div class="meta" style="color:#ccc">${fmt(x.ts)} · ${view.lb+1} of ${p.photos.length}${x.loc?` · <a href="https://maps.google.com/?q=${x.loc.lat},${x.loc.lng}" target="_blank" rel="noopener" style="color:var(--acc)">📍 ${x.loc.lat}, ${x.loc.lng} (within ${x.loc.acc} m)</a>`:' · No location'}</div>
+  <input id="cap" placeholder="Add a caption" value="${esc(x.caption)}" aria-label="Caption">
+  <input id="tgs" placeholder="Tags, separated by commas (e.g. before, roof, damage)" value="${esc((x.tags||[]).join(', '))}" aria-label="Tags">
+  <div class="acts"><button class="btn" id="pv_">Previous</button><button class="btn" id="nx_">Next</button><button class="btn pri" id="sv_">Save caption</button><button class="btn" id="dl_">Delete</button><button class="btn" id="cl_" style="margin-left:auto">Close</button></div>`;
+  document.body.appendChild(d);
+  const close=()=>{d.remove();view.lb=null;render()};
+  d.querySelector('#cl_').onclick=close;
+  d.querySelector('#sv_').onclick=()=>{x.caption=d.querySelector('#cap').value.trim();x.tags=[...new Set(d.querySelector('#tgs').value.split(',').map(t=>t.toLowerCase().replace(/[^a-z0-9 -]/g,'').trim()).filter(Boolean))];save();close()};
+  d.querySelector('#dl_').onclick=()=>{if(confirm('Delete this photo?')){p.photos.splice(view.lb,1);save();close()}};
+  d.querySelector('#pv_').onclick=()=>{d.remove();view.lb=(view.lb-1+p.photos.length)%p.photos.length;lightbox(p)};
+  d.querySelector('#nx_').onclick=()=>{d.remove();view.lb=(view.lb+1)%p.photos.length;lightbox(p)};
+  d.querySelector('#cl_').focus();
+}
+render();
+</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))</script>
+</body>
+</html>
